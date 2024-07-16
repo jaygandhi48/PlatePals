@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { CgProfile } from "react-icons/cg";
 
 const Card = () => {
+    const [heart, setHeart] = useState(false);
+    const handleHeartClick = () => {
+        setHeart(!heart);
+    };
     return (
         <div className="w-72 bg-white p-4 rounded-md relative mt-10 shadow-lg">
             <div className="relative">
@@ -13,14 +17,21 @@ const Card = () => {
                     />
 
                     <div className="absolute top-2 right-2">
-                        <button className="bg-white rounded-full p-2 shadow-md">
+                        <button
+                            className={`rounded-full p-2 shadow-md ${
+                                heart ? "bg-pink-500" : "bg-white"
+                            }`}
+                            onClick={handleHeartClick}
+                        >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 strokeWidth="1.5"
                                 stroke="currentColor"
-                                className="w-5 h-5 text-pink-500"
+                                className={`w-5 h-5 ${
+                                    heart ? "text-white" : "text-pink-500"
+                                }`}
                             >
                                 <path
                                     strokeLinecap="round"
