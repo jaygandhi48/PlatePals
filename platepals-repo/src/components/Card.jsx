@@ -1,10 +1,17 @@
 import React, { useState } from "react";
+import Swal from 'sweetalert2'
 import { CgProfile } from "react-icons/cg";
 
 const Card = () => {
     const [heart, setHeart] = useState(false);
     const handleHeartClick = () => {
         setHeart(!heart);
+        Swal.fire({
+            title: '',
+            text: 'Added to favourites list',
+            icon: 'success',
+            confirmButtonText: 'Great'
+        })
     };
     return (
         <div className="w-72 bg-white p-4 rounded-md relative mt-10 shadow-lg">
