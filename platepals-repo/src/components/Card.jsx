@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { CgProfile } from "react-icons/cg";
 
-const Card = () => {
+const Card = ({ data, index }) => {
+    const { image, profile, recipeName, recipeDescription } = data;
     const [heart, setHeart] = useState(false);
     const handleHeartClick = () => {
         setHeart(!heart);
@@ -12,7 +13,7 @@ const Card = () => {
                 <div className="rounded-md overflow-hidden">
                     <img
                         className="w-full h-40 object-cover"
-                        src="https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?q=80&w=1975&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                        src={image}
                         alt=""
                     />
 
@@ -46,13 +47,10 @@ const Card = () => {
             <div className="mt-4 text-left">
                 <h6 className="text-sm font-semibold flex gap-2">
                     <CgProfile />
-                    Melvin Robson
+                    {profile}
                 </h6>
-                <h3 className="text-xl font-semibold">Avocado Salsa</h3>
-                <p className="text-gray-600">
-                    In a few steps, you'll be able to cook a delicious Avocado
-                    Salsa. It's easy and simple, enjoy!
-                </p>
+                <h3 className="text-xl font-semibold">{recipeName}</h3>
+                <p className="text-gray-600">{recipeDescription}</p>
             </div>
         </div>
     );
