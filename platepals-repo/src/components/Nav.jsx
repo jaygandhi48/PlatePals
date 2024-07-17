@@ -2,21 +2,24 @@ import React from 'react';
 import { CiHome, CiHeart, CiSearch } from "react-icons/ci";
 import { PiCompassThin, PiArticleLight } from "react-icons/pi";
 import { IconContext } from 'react-icons';
+import { useState } from 'react';
+import Search from './Search';
 
 function Nav() {
+  const [value, setValue] = useState('');
+  console.log(value);
+
+  const setKey = (e) =>{
+    setValue(e.target.value);
+  }
+ 
   return (
     <div className='w-full h-14 flex justify-between items-center'>
       <div className='left ml-5 mb-2 flex gap-10 items-center'>
         <h1 className='text-lg font-semibold flex items-center'>
           PlatePals
         </h1>
-        <div>
-          <input
-            type='text'
-            placeholder='Search'
-            className='p-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300 text-sm'
-          />
-        </div>
+       <Search setKey={setKey}></Search>
       </div>
       
       <div className='right flex justify-center items-center gap-10 m-3'>
