@@ -1,5 +1,5 @@
 import "./App.css";
-import Home from "./components/Home";
+import Home from "./pages/Home";
 import Footer from "./components/Footer";
 
 function App() {
