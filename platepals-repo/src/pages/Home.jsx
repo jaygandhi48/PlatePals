@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Nav from "./Nav";
-import Card from "./Card";
+import Nav from "../components/Nav"
+import Card from "../components/Card";
 
 function Home() {
     const data = [
