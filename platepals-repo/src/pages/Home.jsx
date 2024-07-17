@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Nav from "../components/Nav"
+import Nav from "../components/Nav";
 import Card from "../components/Card";
 
 function Home() {
