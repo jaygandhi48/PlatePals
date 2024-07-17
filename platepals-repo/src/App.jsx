@@ -8,10 +8,9 @@ import Nav from "./components/Nav";
 function App() {
     return (
         <>
-            <h1>Home Page</h1>
             <div>
-                <Card />
                 <Nav/>
+                <Card/>
             </div>
         </>
     );
