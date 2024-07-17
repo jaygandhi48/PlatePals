@@ -4,6 +4,8 @@ import viteLogo from "/vite.svg";
 import "./App.css";
 import Card from "./components/Card";
 import Nav from "./components/Nav";
+import Footer from "./components/Footer";
+
 
 function App() {
     return (
@@ -11,6 +13,8 @@ function App() {
             <div>
                 <Nav/>
                 <Card/>
+                <Footer/>
+                
             </div>
         </>
     );
