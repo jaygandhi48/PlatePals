@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 import { CgProfile } from "react-icons/cg";
 
 const Card = ({ data, index }) => {
@@ -8,14 +8,14 @@ const Card = ({ data, index }) => {
     const handleHeartClick = () => {
         setHeart(!heart);
         Swal.fire({
-            title: '',
-            text: 'Added to favourites list',
-            icon: 'success',
-            confirmButtonText: 'Great'
-        })
+            title: "",
+            text: "Added to favourites list",
+            icon: "success",
+            confirmButtonText: "Great",
+        });
     };
     return (
-        <div className="w-72 bg-white p-4 rounded-md relative mt-10 shadow-lg">
+        <div className="w-72 bg-white p-4 rounded-md relative mt-10 shadow-lg hover:shadow-2xl transition-shadow duration-300 scale-105 ">
             <div className="relative">
                 <div className="rounded-md overflow-hidden">
                     <img
