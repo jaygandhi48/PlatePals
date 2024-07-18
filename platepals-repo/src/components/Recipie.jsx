@@ -3,7 +3,7 @@ import Nav from "../components/Nav";
 
 function Recipe() {
   return (
-    <div className="w-full h-screen flex justify-center bg-slate-100 p-5 ">
+    <div className="w-full h-screen flex justify-center bg-zinc-50 p-5 ">
       <div className="w-full max-w-2xl  bg-white rounded-lg shadow-lg flex flex-col overflow-hidden ">
         <div className="relative">
           <img
@@ -86,7 +86,7 @@ function Recipe() {
           </ul>
 
           <h2 className="mt-5 text-xl font-semibold text-gray-800">Method</h2>
-          <div>
+          <div className="mt-2 mb-2">
             <h3 className="text-lg font-semibold text-gray-900">Step 1</h3>
             <p className="text-gray-600">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -95,7 +95,23 @@ function Recipe() {
             </p>
           </div>
 
-          <div>
+          <div className="mt-2 mb-2">
+            <h3 className="text-lg font-semibold text-gray-900">Step 2</h3>
+            <p className="text-gray-600">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua labore
+              et dolore magna aliqua.
+            </p>
+          </div>
+          <div className="mt-2 mb-2">
+            <h3 className="text-lg font-semibold text-gray-900">Step 2</h3>
+            <p className="text-gray-600">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua labore
+              et dolore magna aliqua.
+            </p>
+          </div>
+          <div className="mt-2 mb-2">
             <h3 className="text-lg font-semibold text-gray-900">Step 2</h3>
             <p className="text-gray-600">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do

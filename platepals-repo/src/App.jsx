@@ -7,7 +7,7 @@ function App() {
   return (
     <>
       <div>
-        <Home />
+        <RecipiePage />
       </div>
     </>
   );
