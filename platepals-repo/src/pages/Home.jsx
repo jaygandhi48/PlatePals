@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Nav from "../components/Nav";
 import Card from "../components/Card";
+import AddRecipe from "./AddRecipe";
 import { RiAddLargeLine } from "react-icons/ri";
 import { IconContext } from "react-icons";
 
