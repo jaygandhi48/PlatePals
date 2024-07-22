@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { RxCross1 } from "react-icons/rx";
 import { RiImageEditLine } from "react-icons/ri";
 import { IconContext } from "react-icons";
@@ -6,6 +6,31 @@ import { IconContext } from "react-icons";
 import { useForm } from "react-hook-form";
 
 function AddRecipe() {
+    const [selectedLabel, setSelectedLabel] = useState(" ");
+    const [label, setLabel] = useState([
+        "Breakfast",
+        "Lunch",
+        "Dinner",
+        "Snack",
+        "Dessert",
+    ]);
+    const [newLabel, setNewLabel] = useState("");
+
+    const handleLabelChange = (e) => {
+        setSelectedLabel(e.target.value);
+    };
+
+    const handleNewLabelChange = (e) => {
+        setNewLabel(e.target.value);
+    };
+
+    const addNewLabel = () => {
+        if (newLabel.trim() !== "" && !label.includes(newLabel)) {
+            setLabel([...label, newLabel]);
+            setNewLabel("");
+        }
+    };
+
     return (
         <div className="min-h-screen flex flex-col items-center justify-center">
             <div className="m-4 w-full max-w-lg flex-col bg-white p-8 rounded-lg shadow-lg">
@@ -79,6 +104,44 @@ function AddRecipe() {
                             className="w-full px-3 py-2 border border-zinc-200 rounded-lg bg-white text-black"
                         />
                     </div>
+
+                    <div className="border border-zinc-300 p-4 rounded-xl shadow-sm">
+                        <label
+                            className="block text-sm text-gray-400 mb-2"
+                            htmlFor="label"
+                        >
+                            Recipe Label
+                        </label>
+                        <select
+                            id="label"
+                            value={selectedLabel}
+                            onChange={handleLabelChange}
+                            className="w-full px-3 py-2 border border-zinc-200 rounded-lg bg-white text-black"
+                        >
+                            {label.map((label) => (
+                                <option key={label} value={label}>
+                                    {label}
+                                </option>
+                            ))}
+                        </select>
+                        <div className="mt-2 flex">
+                            <input
+                                type="text"
+                                value={newLabel}
+                                onChange={handleNewLabelChange}
+                                placeholder="Add new label"
+                                className="flex-grow px-3 py-2 border border-zinc-200 rounded-lg bg-white text-black"
+                            />
+                            <button
+                                type="button"
+                                onClick={addNewLabel}
+                                className="ml-2 px-3 py-2 rounded-lg shadow-lg bg-blue-500 hover:bg-blue-600 text-white transition duration-300"
+                            >
+                                Add Label
+                            </button>
+                        </div>
+                    </div>
+
                     <button
                         type="submit"
                         className="text-white font-semibold px-3 py-2 rounded-lg shadow-lg bg-green-500 hover:bg-green-600 transition duration-300"
