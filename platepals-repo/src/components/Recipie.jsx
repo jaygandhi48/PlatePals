@@ -3,7 +3,7 @@ import Nav from "../components/Nav";
 
 function Recipe() {
   return (
-    <div className="w-full h-screen flex justify-center bg-zinc-50 p-5 ">
+    <div className="w-full h-screen flex justify-center bg-red-50 p-5 ">
       <div className="w-full max-w-2xl  bg-white rounded-lg shadow-lg flex flex-col overflow-hidden ">
         <div className="relative">
           <img
