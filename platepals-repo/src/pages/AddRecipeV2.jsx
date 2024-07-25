@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { RxCross1 } from "react-icons/rx";
 import { RiImageEditLine } from "react-icons/ri";
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
+import Modal from "react-modal";
 import { IconContext } from "react-icons";
-import { useForm } from "react-hook-form";
+
+Modal.setAppElement("#root");
 
 function AddRecipe() {
     const {
@@ -11,8 +16,8 @@ function AddRecipe() {
         formState: { errors },
     } = useForm();
 
-    const [selectedLabel, setSelectedLabel] = useState(" ");
-    const [label, setLabel] = useState([
+    const [selectedLabels, setSelectedLabels] = useState([]);
+    const [labels, setLabels] = useState([
         "Breakfast",
         "Lunch",
         "Dinner",
@@ -20,9 +25,19 @@ function AddRecipe() {
         "Dessert",
     ]);
     const [newLabel, setNewLabel] = useState("");
+    const [editLabel, setEditLabel] = useState("");
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [labelToEdit, setLabelToEdit] = useState(null);
 
     const handleLabelChange = (e) => {
-        setSelectedLabel(e.target.value);
+        const value = e.target.value;
+        if (e.target.checked && !selectedLabels.includes(value)) {
+            setSelectedLabels([...selectedLabels, value]);
+        } else {
+            setSelectedLabels(
+                selectedLabels.filter((label) => label !== value)
+            );
+        }
     };
 
     const handleNewLabelChange = (e) => {
@@ -30,14 +45,51 @@ function AddRecipe() {
     };
 
     const addNewLabel = () => {
-        if (newLabel.trim() !== "" && !label.includes(newLabel)) {
-            setLabel([...label, newLabel]);
+        if (newLabel.trim() !== "" && !labels.includes(newLabel)) {
+            setLabels([...labels, newLabel]);
             setNewLabel("");
         }
     };
 
+    const openModal = (label) => {
+        setLabelToEdit(label);
+        setEditLabel(label);
+        setModalIsOpen(true);
+    };
+
+    const closeModal = () => {
+        setModalIsOpen(false);
+    };
+
+    const saveLabel = () => {
+        if (
+            editLabel &&
+            editLabel.trim() !== "" &&
+            !labels.includes(editLabel)
+        ) {
+            setLabels(labels.map((l) => (l === labelToEdit ? editLabel : l)));
+            setSelectedLabels(
+                selectedLabels.map((l) => (l === labelToEdit ? editLabel : l))
+            );
+            closeModal();
+        }
+    };
+
+    const removeLabel = (labelToRemove) => {
+        setSelectedLabels(
+            selectedLabels.filter((label) => label !== labelToRemove)
+        );
+    };
+
+    const deleteLabel = (labelToDelete) => {
+        setLabels(labels.filter((label) => label !== labelToDelete));
+        setSelectedLabels(
+            selectedLabels.filter((label) => label !== labelToDelete)
+        );
+    };
+
     const onSubmit = (data) => {
-        console.log(data);
+        console.log({ ...data, labels: selectedLabels });
     };
 
     return (
@@ -85,15 +137,13 @@ function AddRecipe() {
                                 required: "Recipe Name is required",
                             })}
                         />
-
-                        <div className="mt-2">
-                            {errors.recipeName && (
-                                <p className="text-red-400 text-sm mt-1">
-                                    {errors.recipeName.message}
-                                </p>
-                            )}
-                        </div>
+                        {errors.recipeName && (
+                            <p className="text-red-400 text-sm mt-1">
+                                {errors.recipeName.message}
+                            </p>
+                        )}
                     </div>
+
                     <div className="border border-zinc-300 p-4 rounded-xl shadow-sm">
                         <label
                             className="block text-sm font-medium text-gray-700 mb-2"
@@ -106,30 +156,28 @@ function AddRecipe() {
                                 type="checkbox"
                                 id="ingredients-checkbox"
                                 className="mr-2"
-                                {...register("ingredients-checkbox", {})}
+                                {...register("ingredientsCheckbox", {})}
                             />
                             <input
                                 type="text"
-                                placeholder="ingredients"
+                                placeholder="Ingredients"
                                 id="ingredients"
                                 className="flex-grow px-3 py-2 mr-2 border border-zinc-200 rounded-lg bg-white text-black"
                                 {...register("ingredients", {
                                     required: "Recipe Ingredients are required",
                                 })}
                             />
-
                             <button className="text-red-500">
                                 <RxCross1 />
                             </button>
-                            <div className="ml-2">
-                                {errors.ingredients && (
-                                    <p className="text-red-400 text-sm mt-1">
-                                        {errors.ingredients.message}
-                                    </p>
-                                )}
-                            </div>
                         </div>
+                        {errors.ingredients && (
+                            <p className="text-red-400 text-sm mt-1">
+                                {errors.ingredients.message}
+                            </p>
+                        )}
                     </div>
+
                     <div className="border border-zinc-300 p-4 rounded-xl shadow-sm">
                         <label
                             className="block text-sm font-medium text-gray-700 mb-2"
@@ -145,60 +193,79 @@ function AddRecipe() {
                                 required: "Recipe Method is required",
                             })}
                         />
-                        <div className="mt-2">
-                            {errors.method && (
-                                <p className="text-red-400 text-sm mt-1">
-                                    {errors.method.message}
-                                </p>
-                            )}
-                        </div>
+                        {errors.method && (
+                            <p className="text-red-400 text-sm mt-1">
+                                {errors.method.message}
+                            </p>
+                        )}
                     </div>
 
                     <div className="border border-zinc-300 p-4 rounded-xl shadow-sm ">
-                        <label
-                            className="block text-sm font-medium text-gray-700 mb-2"
-                            htmlFor="label"
-                        >
-                            Recipe Label
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Recipe Labels
                         </label>
-                        <select
-                            id="label"
-                            // value={selectedLabel}
-                            onChange={handleLabelChange}
-                            className="w-full px-3 py-2 border border-zinc-200 rounded-lg bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            {...register("label", {})}
-                        >
-                            {label.map((label) => (
-                                <option key={label} value={label}>
+                        <div className="flex flex-wrap gap-x-3 gap-y-2 ">
+                            {labels.map((label) => (
+                                <div
+                                    key={label}
+                                    className="flex items-center text-sm gap-1 bg-zinc-100 p-1 rounded-lg drop-shadow-md "
+                                >
+                                    <input
+                                        type="checkbox"
+                                        value={label}
+                                        onChange={handleLabelChange}
+                                        className="mr-1"
+                                    />
                                     {label}
-                                </option>
+                                    <button
+                                        type="button"
+                                        onClick={() => openModal(label)}
+                                        className="ml-1 text-red-500 hover:text-red-700 bg-zinc-300 rounded-full p-1"
+                                    >
+                                        <FaEdit />
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => deleteLabel(label)}
+                                        className="ml-1 text-red-500 hover:text-red-700 bg-zinc-300 rounded-full p-1"
+                                    >
+                                        <MdDelete />
+                                    </button>
+                                </div>
                             ))}
-                        </select>
-                        <div className="mt-4 flex items-center">
+                        </div>
+                        <div className="flex mt-4">
                             <input
-                                id="newLabel"
                                 type="text"
                                 value={newLabel}
                                 onChange={handleNewLabelChange}
-                                placeholder="Add new label"
-                                className="flex-grow px-3 py-2 border border-zinc-200 rounded-lg bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                {...register("newLabel")}
+                                placeholder="Add Label"
+                                className="w-full px-3 py-2 border text-nowrap border-zinc-200 rounded-lg bg-white text-black"
                             />
-
                             <button
                                 type="button"
                                 onClick={addNewLabel}
-                                className="ml-2 px-4 py-2 rounded-lg shadow-lg bg-blue-500 hover:bg-blue-600 text-white font-semibold transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="ml-2 px-4 py-1 text-nowrap rounded-lg shadow-lg bg-blue-500 hover:bg-blue-600 text-white font-semibold transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
                                 Add Label
                             </button>
                         </div>
-                        <div className="ml-2">
-                            {errors.label && (
-                                <p className="text-red-400 text-sm mt-1">
-                                    {errors.label.message}
-                                </p>
-                            )}
+                        <div className="mt-3 flex flex-wrap gap-2">
+                            {selectedLabels.map((label) => (
+                                <div
+                                    key={label}
+                                    className="flex items-center gap-1 bg-green-100 p-1 rounded-lg drop-shadow-md "
+                                >
+                                    <span>{label}</span>
+                                    <button
+                                        type="button"
+                                        className="ml-2 text-red-500 hover:text-red-700"
+                                        onClick={() => removeLabel(label)}
+                                    >
+                                        <MdDelete />
+                                    </button>
+                                </div>
+                            ))}
                         </div>
                     </div>
 
@@ -209,6 +276,37 @@ function AddRecipe() {
                         Add Recipe
                     </button>
                 </form>
+
+                <Modal
+                    isOpen={modalIsOpen}
+                    onRequestClose={closeModal}
+                    contentLabel="Edit Label"
+                    className="bg-white rounded-lg shadow-lg p-8 max-w-md mx-auto mt-20"
+                >
+                    <h2 className="text-2xl font-semibold mb-4">Edit Label</h2>
+                    <input
+                        type="text"
+                        value={editLabel}
+                        onChange={(e) => setEditLabel(e.target.value)}
+                        className="w-full px-3 py-2 border border-zinc-200 rounded-lg bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                    <div className="flex justify-between mt-4">
+                        <button
+                            type="button"
+                            onClick={saveLabel}
+                            className="px-4 py-2 rounded-lg shadow-lg bg-green-500 hover:bg-green-600 text-white font-semibold transition duration-300"
+                        >
+                            Save
+                        </button>
+                        <button
+                            type="button"
+                            onClick={closeModal}
+                            className="px-4 py-2 rounded-lg shadow-lg bg-gray-500 hover:bg-gray-600 text-white font-semibold transition duration-300"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </Modal>
             </div>
         </div>
     );
