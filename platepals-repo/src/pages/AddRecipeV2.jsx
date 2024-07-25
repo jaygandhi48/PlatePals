@@ -2,8 +2,15 @@ import React, { useState } from "react";
 import { RxCross1 } from "react-icons/rx";
 import { RiImageEditLine } from "react-icons/ri";
 import { IconContext } from "react-icons";
+import { useForm } from "react-hook-form";
 
 function AddRecipe() {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
+
     const [selectedLabel, setSelectedLabel] = useState(" ");
     const [label, setLabel] = useState([
         "Breakfast",
@@ -27,6 +34,10 @@ function AddRecipe() {
             setLabel([...label, newLabel]);
             setNewLabel("");
         }
+    };
+
+    const onSubmit = (data) => {
+        console.log(data);
     };
 
     return (
@@ -54,10 +65,13 @@ function AddRecipe() {
                     </IconContext.Provider>
                 </div>
 
-                <form className="flex flex-col gap-4">
+                <form
+                    className="flex flex-col gap-4"
+                    onSubmit={handleSubmit(onSubmit)}
+                >
                     <div className="border border-zinc-300 p-4 rounded-xl shadow-sm">
                         <label
-                            className="block text-sm text-gray-400 mb-2"
+                            className="block text-sm font-medium text-gray-700 mb-2"
                             htmlFor="recipe-name"
                         >
                             Recipe Name
@@ -67,31 +81,58 @@ function AddRecipe() {
                             placeholder="Name"
                             id="recipe-name"
                             className="w-full px-3 py-2 border border-zinc-200 rounded-lg bg-white text-black"
+                            {...register("recipeName", {
+                                required: "Recipe Name is required",
+                            })}
                         />
+
+                        <div className="mt-2">
+                            {errors.recipeName && (
+                                <p className="text-red-400 text-sm mt-1">
+                                    {errors.recipeName.message}
+                                </p>
+                            )}
+                        </div>
                     </div>
                     <div className="border border-zinc-300 p-4 rounded-xl shadow-sm">
                         <label
-                            className="block text-sm text-gray-400 mb-2"
+                            className="block text-sm font-medium text-gray-700 mb-2"
                             htmlFor="ingredients"
                         >
                             Ingredients
                         </label>
                         <div className="flex items-center">
-                            <input type="checkbox" className="mr-2" />
+                            <input
+                                type="checkbox"
+                                id="ingredients-checkbox"
+                                className="mr-2"
+                                {...register("ingredients-checkbox", {})}
+                            />
                             <input
                                 type="text"
-                                placeholder="Ingredients"
+                                placeholder="ingredients"
                                 id="ingredients"
                                 className="flex-grow px-3 py-2 mr-2 border border-zinc-200 rounded-lg bg-white text-black"
+                                {...register("ingredients", {
+                                    required: "Recipe Ingredients are required",
+                                })}
                             />
+
                             <button className="text-red-500">
                                 <RxCross1 />
                             </button>
+                            <div className="ml-2">
+                                {errors.ingredients && (
+                                    <p className="text-red-400 text-sm mt-1">
+                                        {errors.ingredients.message}
+                                    </p>
+                                )}
+                            </div>
                         </div>
                     </div>
                     <div className="border border-zinc-300 p-4 rounded-xl shadow-sm">
                         <label
-                            className="block text-sm text-gray-400 mb-2"
+                            className="block text-sm font-medium text-gray-700 mb-2"
                             htmlFor="method"
                         >
                             Method
@@ -100,21 +141,32 @@ function AddRecipe() {
                             placeholder="Step 1: "
                             id="method"
                             className="w-full px-3 py-2 border border-zinc-200 rounded-lg bg-white text-black"
+                            {...register("method", {
+                                required: "Recipe Method is required",
+                            })}
                         />
+                        <div className="mt-2">
+                            {errors.method && (
+                                <p className="text-red-400 text-sm mt-1">
+                                    {errors.method.message}
+                                </p>
+                            )}
+                        </div>
                     </div>
 
-                    <div className="border border-zinc-300 p-4 rounded-xl shadow-sm">
+                    <div className="border border-zinc-300 p-4 rounded-xl shadow-sm ">
                         <label
-                            className="block text-sm text-gray-400 mb-2"
+                            className="block text-sm font-medium text-gray-700 mb-2"
                             htmlFor="label"
                         >
                             Recipe Label
                         </label>
                         <select
                             id="label"
-                            value={selectedLabel}
+                            // value={selectedLabel}
                             onChange={handleLabelChange}
-                            className="w-full px-3 py-2 border border-zinc-200 rounded-lg bg-white text-black"
+                            className="w-full px-3 py-2 border border-zinc-200 rounded-lg bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            {...register("label", {})}
                         >
                             {label.map((label) => (
                                 <option key={label} value={label}>
@@ -122,21 +174,31 @@ function AddRecipe() {
                                 </option>
                             ))}
                         </select>
-                        <div className="mt-2 flex">
+                        <div className="mt-4 flex items-center">
                             <input
+                                id="newLabel"
                                 type="text"
                                 value={newLabel}
                                 onChange={handleNewLabelChange}
                                 placeholder="Add new label"
-                                className="flex-grow px-3 py-2 border border-zinc-200 rounded-lg bg-white text-black"
+                                className="flex-grow px-3 py-2 border border-zinc-200 rounded-lg bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                {...register("newLabel")}
                             />
+
                             <button
                                 type="button"
                                 onClick={addNewLabel}
-                                className="ml-2 px-3 py-2 rounded-lg shadow-lg bg-blue-500 hover:bg-blue-600 text-white transition duration-300"
+                                className="ml-2 px-4 py-2 rounded-lg shadow-lg bg-blue-500 hover:bg-blue-600 text-white font-semibold transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
                                 Add Label
                             </button>
+                        </div>
+                        <div className="ml-2">
+                            {errors.label && (
+                                <p className="text-red-400 text-sm mt-1">
+                                    {errors.label.message}
+                                </p>
+                            )}
                         </div>
                     </div>
 
