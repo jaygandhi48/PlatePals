@@ -6,7 +6,7 @@ function Search({ setKey }) {
       <input
         type="text"
         placeholder="Search recipie"
-        className="p-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300 text-sm"
+        className="p-2 border box-border  w-[300px] border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300 text-sm"
         onKeyUp={setKey}
       />
     </div>

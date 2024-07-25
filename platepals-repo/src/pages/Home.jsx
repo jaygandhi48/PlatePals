@@ -28,6 +28,7 @@ function Home() {
       recipeName: "Avocado Salsa",
       recipeDescription:
         " In a few steps, you'll be able to cook a delicious AvocadoSalsa. It's easy and simple, enjoy!",
+      tags: ["Vegan", "Vegetarian"],
     },
     {
       image:
@@ -35,6 +36,7 @@ function Home() {
       profile: "Betty White",
       recipeName: "Burger",
       recipeDescription: "Juicy Burger",
+      tags: ["High Protein", "Gluten Free"],
     },
     {
       image:
@@ -42,6 +44,7 @@ function Home() {
       profile: "Ques Freyer",
       recipeName: "Fries",
       recipeDescription: "Fries with a twist",
+      tags: [],
     },
   ];
 
