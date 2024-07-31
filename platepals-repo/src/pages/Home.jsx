@@ -13,7 +13,7 @@ function Home() {
     return (
         <div>
             <Nav />
-            <div className="m-10">
+            {/* <div className="m-10">
                 <h1 className="font-semibold text-4xl">Recipes For You</h1>
                 <div className="flex gap-10 flex-wrap">
                     {recipeData.map((obj, index) => (
@@ -32,7 +32,7 @@ function Home() {
                         <RiAddLargeLine />
                     </IconContext.Provider>
                 </button>
-            </div>
+            </div> */}
             <AddRecipe />
         </div>
     );
