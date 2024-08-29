@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 import { CgProfile } from "react-icons/cg";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 const Card = ({ data, index }) => {
   const { image, profile, recipeName, recipeDescription } = data;
@@ -22,8 +23,18 @@ const Card = ({ data, index }) => {
       });
     }
   };
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    navigate(`recipies/${recipeName}`);
+    console.log(`${recipeName}`);
+  };
+
   return (
-    <div className="w-72 bg-white p-4 rounded-md relative mt-10 shadow-lg">
+    <div
+      className="w-72 bg-white p-4 rounded-md relative mt-10 shadow-lg"
+      onClick={handleCardClick}
+    >
       <div className="relative">
         <div className="rounded-md overflow-hidden">
           <img className="w-full h-40 object-cover" src={image} alt="" />

@@ -4,6 +4,7 @@ import { PiCompassThin, PiArticleLight } from "react-icons/pi";
 import { IconContext } from "react-icons";
 import { useState } from "react";
 import Search from "./Search";
+import { Link } from "react-router-dom";
 
 function Nav({ value }) {
   return (
@@ -19,9 +20,15 @@ function Nav({ value }) {
             className: "size-5 hover:cursor-pointer hover:text-pink-400",
           }}
         >
-          <CiHome />
+          <Link to={"/"}>
+            <CiHome />
+          </Link>
+
+          <Link to={"/search"}>
+            <PiCompassThin />
+          </Link>
+
           <CiHeart />
-          <PiCompassThin />
           <PiArticleLight />
         </IconContext.Provider>
 
