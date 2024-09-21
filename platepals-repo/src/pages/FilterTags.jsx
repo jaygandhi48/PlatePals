@@ -18,6 +18,9 @@ function FilterTags() {
       alert("Please enter a tag");
     }
   };
+  const handleSearch = () => {
+    tags.length == 0 ? alert("Please add a tag") : alert("Fetching tags...");
+  };
   return (
     <div className="w-full h-screen bg-zinc-50 ">
       <Nav />
@@ -35,25 +38,20 @@ function FilterTags() {
       </div>
       <div className="flex  justify-center">
         <div className=" overflow-auto flex  h-1/2 w-1/2 mt-10 flex-wrap">
-          <h1 className="bg-purple-100 p-2 w-1/4 text-center text-purple-500 rounded-full ml-10 mt-3">
-            Big Tag
-          </h1>
-          <h1 className="bg-purple-100 p-2 w-1/4 text-center text-purple-500 rounded-full ml-10 mt-3">
-            Tag
-          </h1>
-          <h1 className="bg-purple-100 p-2 w-1/4 text-center text-purple-500 rounded-full ml-10 mt-3">
-            Tag
-          </h1>
-          <h1 className="bg-purple-100 p-2 w-1/4 text-center text-purple-500 rounded-full ml-10 mt-3">
-            Tag
-          </h1>
-          <h1 className="bg-purple-100 p-2 w-1/4 text-center text-purple-500 rounded-full ml-10 mt-3">
-            Tag
-          </h1>
+          {tags.map((tag) => {
+            return (
+              <h1 className="bg-purple-100 p-2 w-1/4 text-center text-purple-500 rounded-full ml-10 mt-3">
+                {tag}
+              </h1>
+            );
+          })}
         </div>
       </div>
       <div className="flex justify-center mt-3">
-        <button class="bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg">
+        <button
+          className="bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg"
+          onClick={handleSearch}
+        >
           Search
         </button>
       </div>
