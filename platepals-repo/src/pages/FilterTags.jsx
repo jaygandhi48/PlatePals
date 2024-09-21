@@ -2,6 +2,7 @@ import React from "react";
 import Search from "../components/Search";
 import Nav from "../components/Nav";
 import { useState } from "react";
+import data from "../data/RecipieData.js";
 
 function FilterTags() {
   const [tags, setTags] = useState([]);
@@ -19,7 +20,15 @@ function FilterTags() {
     }
   };
   const handleSearch = () => {
-    tags.length == 0 ? alert("Please add a tag") : alert("Fetching tags...");
+    tags.length == 0
+      ? alert("Please add a tag")
+      : data.map((e, dataIndex) => {
+          tags.map((i, tagsIndex) => {
+            if (e.recipeName.includes(i)) {
+              console.log(e.recipeName);
+            }
+          });
+        });
   };
   return (
     <div className="w-full h-screen bg-zinc-50 ">
@@ -38,9 +47,12 @@ function FilterTags() {
       </div>
       <div className="flex  justify-center">
         <div className=" overflow-auto flex  h-1/2 w-1/2 mt-10 flex-wrap">
-          {tags.map((tag) => {
+          {tags.map((tag, index) => {
             return (
-              <h1 className="bg-purple-100 p-2 w-1/4 text-center text-purple-500 rounded-full ml-10 mt-3">
+              <h1
+                key={index}
+                className="bg-purple-100 p-2 w-1/4 text-center text-purple-500 rounded-full ml-10 mt-3"
+              >
                 {tag}
               </h1>
             );
