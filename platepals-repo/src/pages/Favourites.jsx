@@ -1,23 +1,44 @@
 import React, { useEffect, useState } from "react";
+import { fetchFavouriteRecipes, toggleFavourite } from "../data/supabaseClient"; // Import the functions from supabaseClient.js
 import Nav from "../components/Nav";
 import Card from "../components/Card";
-
-import data from "../data/RecipieData.js";
-
-//Currently unfavorite button is not working
 
 function Favourites() {
     const [favouriteRecipes, setFavouriteRecipes] = useState([]);
 
     useEffect(() => {
-        const favourites = JSON.parse(localStorage.getItem("favourites")) || [];
-        console.log(favourites);
-
-        const filteredData = data.filter((recipe) => {
-            return favourites.includes(recipe.recipeName);
-        });
-        setFavouriteRecipes(filteredData);
+        fetchFavorites();
     }, []);
+
+    // Fetch all favourite recipes from Supabase
+    async function fetchFavorites() {
+        const { data, error } = await fetchFavouriteRecipes();
+        if (error) {
+            console.error("Error fetching favourite recipes:", error.message);
+        } else {
+            setFavouriteRecipes(data); // Set the favourite recipes in state
+        }
+    }
+
+    const handleToggleFavourite = async (id, isFavourite) => {
+        const { error } = await toggleFavourite(id, isFavourite);
+
+        if (error) {
+            console.error("Error toggling favourite:", error);
+        } else {
+            // Log to check if state updates correctly
+            console.log("Favourite status toggled for:", id);
+
+            // Update state directly to reflect the new status
+            setFavouriteRecipes((prevRecipes) =>
+                prevRecipes.map((recipe) =>
+                    recipe.id === id
+                        ? { ...recipe, isFavourite: !isFavourite }
+                        : recipe
+                )
+            );
+        }
+    };
 
     return (
         <div>
@@ -26,17 +47,18 @@ function Favourites() {
                 <div className="flex p-5">
                     <h1 className="text-4xl font-semibold">Favourites</h1>
                     <div className="m-10 flex gap-10">
-                        {favouriteRecipes.length > 0 ? (
-                            favouriteRecipes.map((item, index) => (
-                                <Card
-                                    key={index}
-                                    data={item}
-                                    favourite={true}
-                                />
-                            ))
-                        ) : (
-                            <p>No favourite recipes found</p>
-                        )}
+                        {favouriteRecipes.map((item) => (
+                            <Card
+                                key={item.id}
+                                data={item}
+                                onToggleFavourite={() =>
+                                    handleToggleFavourite(
+                                        item.id,
+                                        item.isFavourite
+                                    )
+                                }
+                            />
+                        ))}
                     </div>
                 </div>
             </div>

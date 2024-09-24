@@ -2,51 +2,67 @@ import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { CgProfile } from "react-icons/cg";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import Favourites from "../pages/Favourites";
+import PropTypes from "prop-types";
 
-const Card = ({ data, favourite }) => {
-    const { image, profile, recipeName, recipeDescription } = data;
-    const [heart, setHeart] = useState(false);
+const Card = ({ data, onToggleFavourite }) => {
+    const { image, username, recipeTitle, recipeDesc, isFavourite } = data;
+    const navigate = useNavigate();
 
+    // Handle clicking on the heart icon to toggle favourite
     const handleHeartClick = (event) => {
-        event.stopPropagation();
-        const favourites = JSON.parse(localStorage.getItem("favourites")) || [];
-        //Store in local storage the state of the heart.
+        event.stopPropagation(); // Prevent card click from triggering
+        console.log("Heart clicked!"); // Add a console log to check if this function fires
 
-        if (!heart) {
-            favourites.push(recipeName);
+        if (onToggleFavourite) {
+            console.log("Heart clicked!"); // Add a console log to check if this function fires
+            onToggleFavourite(); // Call the function passed from parent
+
+            // Show SweetAlert based on the isFavourite status
             Swal.fire({
                 title: "",
-                text: "Added to favourites list",
-                icon: "success",
+                text: isFavourite
+                    ? "Removed from favourites list"
+                    : "Added to favourites list",
+                icon: isFavourite ? "error" : "success",
                 confirmButtonText: "Great",
             });
         } else {
-            const index = favourites.indexOf(recipeName);
-            if (index > -1) {
-                favourites.splice(index, 1);
-            }
-            Swal.fire({
-                title: "",
-                text: "Removed to favourites list",
-                icon: "error",
-            });
+            console.error("onToggleFavourite function is not defined.");
         }
-
-        localStorage.setItem("favourites", JSON.stringify(favourites));
-        setHeart(!heart);
     };
-    const navigate = useNavigate();
-
     const handleCardClick = () => {
-        navigate(`recipies/${recipeName}`);
+        navigate(`recipes/${recipeTitle}`);
     };
 
-    // useEffect(() => {
+    // const handleHeartClick = (event) => {
+    //     event.stopPropagation();
     //     const favourites = JSON.parse(localStorage.getItem("favourites")) || [];
-    //     if (favourites.includes(index)) {
-    //         setHeart(true);
+    //     //Store in local storage the state of the heart.
+
+    //     if (!heart) {
+    //         favourites.push(recipeTitle);
+    //         Swal.fire({
+    //             title: "",
+    //             text: "Added to favourites list",
+    //             icon: "success",
+    //             confirmButtonText: "Great",
+    //         });
+    //     } else {
+    //         const index = favourites.indexOf(recipeTitle);
+    //         if (index > -1) {
+    //             favourites.splice(index, 1);
+    //         }
+    //         Swal.fire({
+    //             title: "",
+    //             text: "Removed to favourites list",
+    //             icon: "error",
+    //         });
     //     }
-    // }, [recipeName]);
+
+    //     localStorage.setItem("favourites", JSON.stringify(favourites));
+    //     setHeart(!heart);
+    // };
 
     return (
         <div
@@ -64,7 +80,7 @@ const Card = ({ data, favourite }) => {
                     <div className="absolute top-2 right-2">
                         <button
                             className={`rounded-full p-2 shadow-md ${
-                                heart ? "bg-pink-500" : "bg-white"
+                                isFavourite ? "bg-pink-500" : "bg-white"
                             }`}
                             onClick={handleHeartClick}
                         >
@@ -75,7 +91,7 @@ const Card = ({ data, favourite }) => {
                                 strokeWidth="1.5"
                                 stroke="currentColor"
                                 className={`w-5 h-5 ${
-                                    heart ? "text-white" : "text-pink-500"
+                                    isFavourite ? "text-white" : "text-pink-500"
                                 }`}
                             >
                                 <path
@@ -91,10 +107,10 @@ const Card = ({ data, favourite }) => {
             <div className="mt-4 text-left">
                 <h6 className="text-sm font-semibold flex gap-2">
                     <CgProfile />
-                    {profile}
+                    {username}
                 </h6>
-                <h3 className="text-xl font-semibold">{recipeName}</h3>
-                <p className="text-gray-600">{recipeDescription}</p>
+                <h3 className="text-xl font-semibold">{recipeTitle}</h3>
+                <p className="text-gray-600">{recipeDesc}</p>
             </div>
         </div>
     );

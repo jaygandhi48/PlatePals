@@ -6,6 +6,7 @@ import Loading from "./components/Loading";
 import Favourites from "./pages/Favourites";
 import FilterTags from "./pages/FilterTags";
 import { Routes, Route } from "react-router-dom";
+import Test from "./components/Test";
 //Remove the impports after routes are implemented
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
                     <Route path="/search" element={<FilterTags />}></Route>
                     <Route path="/profile" element={<Home />}></Route>
                     <Route path="/favourites" element={<Favourites />}></Route>
+                    <Route path="/test" element={<Test />}></Route>
                 </Routes>
             </div>
         </>
